@@ -1,52 +1,96 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { Feather } from "@expo/vector-icons"; 
 
 export default function WeatherCard({ data }) {
   if (!data) return null;
+
+  // Função para mapear o 'slug' da API para um ícone do Feather
+  const getWeatherIcon = (conditionSlug) => {
+    switch (conditionSlug) {
+      case 'clear_day': return 'sun';
+      case 'clear_night': return 'moon';
+      case 'cloud':
+      case 'cloudly_day':
+      case 'cloudly_night': return 'cloud';
+      case 'rain': return 'cloud-rain';
+      case 'storm': return 'cloud-lightning';
+      case 'snow': return 'cloud-snow';
+      default: return 'cloud'; // Ícone padrão
+    }
+  };
+
+  const iconName = getWeatherIcon(data.condition_slug);
 
   return (
     <View style={styles.container}>
       {/* Cidade */}
       <Text style={styles.city}>{data.city ?? "--"}</Text>
 
-      {/* Temperatura */}
+      {/* Ícone Dinâmico do Clima */}
+      <Feather name={iconName} size={90} color="#fff" style={styles.icon} />
+
+      {/* Temperatura (com tamanho de destaque) */}
       <Text style={styles.temp}>{data.temp ?? "--"}°</Text>
 
       {/* Descrição */}
       <Text style={styles.desc}>{data.description ?? "--"}</Text>
 
-      {/* Min e Max */}
-      <Text style={styles.minMax}>
-        Max.: {data?.forecast?.[0]?.max ?? "--"}° | 
-        Min.: {data?.forecast?.[0]?.min ?? "--"}°
-      </Text>
+      {/* Máxima e Mínima com setas indicativas */}
+      <View style={styles.minMaxContainer}>
+        <Feather name="arrow-up" size={18} color="#ff7675" />
+        <Text style={styles.minMaxText}>{data?.forecast?.[0]?.max ?? "--"}°</Text>
+        
+        <Text style={styles.separator}>  |  </Text>
+        
+        <Feather name="arrow-down" size={18} color="#74b9ff" />
+        <Text style={styles.minMaxText}>{data?.forecast?.[0]?.min ?? "--"}°</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1e3c72",
+    backgroundColor: "rgba(255, 255, 255, 0.15)", // Fundo translúcido moderno (efeito vidro)
     borderRadius: 25,
-    padding: 20,
-    marginBottom: 20,
+    padding: 30,
+    marginBottom: 30,
+    alignItems: "center", // Centraliza tudo para o padrão de apps de clima
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.2)",
   },
   city: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 26,
+    fontWeight: "600",
+  },
+  icon: {
+    marginVertical: 15, // Espaçamento em cima e em baixo do ícone
   },
   temp: {
     color: "#fff",
-    fontSize: 60,
+    fontSize: 80, // Bem grande para chamar a atenção
     fontWeight: "bold",
-    marginVertical: 10,
   },
   desc: {
-    color: "#fff",
-    fontSize: 16,
-  },
-  minMax: {
-    color: "#ccc",
+    color: "#e0e0e0",
+    fontSize: 20,
+    textTransform: "capitalize",
     marginTop: 5,
+    marginBottom: 15,
+  },
+  minMaxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  minMaxText: {
+    color: "#fff",
+    fontSize: 18,
+    marginLeft: 4,
+    fontWeight: "500",
+  },
+  separator: {
+    color: "#rgba(255,255,255,0.5)",
   },
 });

@@ -76,7 +76,7 @@ export default function Home() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scroll}
       >
-        {weather.forecast.map((item, index) => (
+        {weather.forecast && weather.forecast.map((item, index) => (
           <ForecastItem key={index} item={item} />
         ))}
       </ScrollView>
