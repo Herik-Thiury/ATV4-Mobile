@@ -5,7 +5,6 @@ import { Feather } from "@expo/vector-icons";
 export default function WeatherCard({ data }) {
   if (!data) return null;
 
-  // Função para mapear o 'slug' da API para um ícone do Feather
   const getWeatherIcon = (conditionSlug) => {
     switch (conditionSlug) {
       case 'clear_day': return 'sun';
@@ -16,7 +15,7 @@ export default function WeatherCard({ data }) {
       case 'rain': return 'cloud-rain';
       case 'storm': return 'cloud-lightning';
       case 'snow': return 'cloud-snow';
-      default: return 'cloud'; // Ícone padrão
+      default: return 'cloud'; 
     }
   };
 
@@ -52,11 +51,11 @@ export default function WeatherCard({ data }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(255, 255, 255, 0.15)", // Fundo translúcido moderno (efeito vidro)
+    backgroundColor: "rgba(255, 255, 255, 0.15)", 
     borderRadius: 25,
     padding: 30,
     marginBottom: 30,
-    alignItems: "center", // Centraliza tudo para o padrão de apps de clima
+    alignItems: "center", 
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.2)",
   },
@@ -66,11 +65,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   icon: {
-    marginVertical: 15, // Espaçamento em cima e em baixo do ícone
+    marginVertical: 15, 
   },
   temp: {
     color: "#fff",
-    fontSize: 80, // Bem grande para chamar a atenção
+    fontSize: 80, 
     fontWeight: "bold",
   },
   desc: {
