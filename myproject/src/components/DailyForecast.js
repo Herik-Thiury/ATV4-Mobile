@@ -1,86 +1,54 @@
 // src/components/DailyForecast.js
 import { Feather } from '@expo/vector-icons';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { getWeatherInfo } from '../utils/weatherUtils';
 
-// Função simples para mapear a condição da API para um ícone do Feather
-const getIconName = (condition) => {
-  switch (condition) {
-    case 'storm': return 'cloud-lightning';
-    case 'snow': return 'cloud-snow';
-    case 'rain': return 'cloud-rain';
-    case 'fog': return 'cloud-drizzle';
-    case 'clear_day': return 'sun';
-    case 'clear_night': return 'moon';
-    case 'cloud':
-    case 'cloudly_day':
-    case 'cloudly_night': return 'cloud';
-    default: return 'cloud';
-  }
-};
+export default function DailyForecast({ daily, theme }) {
+  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
-export default function DailyForecast({ forecast, theme }) {
-  const renderItem = ({ item }) => (
-    <View style={[styles.item, { borderBottomColor: 'rgba(255,255,255,0.1)' }]}>
-      <Text style={[styles.day, { color: theme.text }]}>{item.weekday}</Text>
-      
-      <View style={styles.conditionContainer}>
-        <Feather name={getIconName(item.condition)} size={20} color={theme.text} style={styles.icon} />
-        <Text style={[styles.description, { color: theme.text }]}>{item.description}</Text>
-      </View>
-      
-      <Text style={[styles.tempStr, { color: theme.text }]}>
-        {item.min}° / {item.max}°
-      </Text>
-    </View>
-  );
+  const forecastList = daily.time.slice(1).map((timeStr, index) => {
+    const date = new Date(timeStr + 'T00:00:00');
+    const actualIndex = index + 1;
+    
+    return {
+      id: timeStr,
+      dayName: weekDays[date.getDay()],
+      min: Math.round(daily.temperature_2m_min[actualIndex]),
+      max: Math.round(daily.temperature_2m_max[actualIndex]),
+      code: daily.weather_code[actualIndex],
+    };
+  });
 
   return (
     <View style={[styles.container, { backgroundColor: theme.cardBg }]}>
-      <FlatList
-        data={forecast}
-        keyExtractor={(item) => item.date}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-      />
+      {forecastList.map((item, index) => {
+        const { icon } = getWeatherInfo(item.code);
+        const isLast = index === forecastList.length - 1;
+
+        return (
+          <View key={item.id} style={[styles.item, !isLast && styles.borderBottom]}>
+            <Text style={[styles.day, { color: theme.text }]}>{item.dayName}</Text>
+            
+            <View style={styles.conditionContainer}>
+              <Feather name={icon} size={20} color={theme.text} style={styles.icon} />
+            </View>
+            
+            <Text style={[styles.tempStr, { color: theme.text }]}>
+              {item.min}° / {item.max}°
+            </Text>
+          </View>
+        );
+      })}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 20,
-  },
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-  },
-  day: {
-    fontSize: 16,
-    width: 50,
-    fontWeight: '600',
-  },
-  conditionContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    paddingLeft: 20,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  description: {
-    fontSize: 14,
-    opacity: 0.9,
-  },
-  tempStr: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  container: { borderRadius: 20, padding: 20, marginBottom: 40 },
+  item: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: 15 },
+  borderBottom: { borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.1)' },
+  day: { fontSize: 16, width: 50, fontWeight: '600' },
+  conditionContainer: { flex: 1, alignItems: 'center' },
+  icon: {},
+  tempStr: { fontSize: 16, fontWeight: '600', width: 70, textAlign: 'right' },
 });
