@@ -13,7 +13,6 @@ export default function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Novos estados para a pesquisa
   const [searchQuery, setSearchQuery] = useState('');
   const [currentCityName, setCurrentCityName] = useState('Recife, Pernambuco');
 
@@ -28,7 +27,7 @@ export default function App() {
     
     setLoading(true);
     try {
-      // Usamos a API de Geocoding da Open-Meteo
+      // API de Geocoding da Open-Meteo
       const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${searchQuery}&count=1&language=pt&format=json`;
       const geoResponse = await axios.get(geoUrl);
       

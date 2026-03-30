@@ -1,4 +1,3 @@
-// src/components/DailyForecast.js
 import { Feather } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 import { getWeatherInfo } from '../utils/weatherUtils';

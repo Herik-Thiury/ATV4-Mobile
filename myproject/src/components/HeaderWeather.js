@@ -1,4 +1,3 @@
-// src/components/HeaderWeather.js
 import { StyleSheet, Text, View } from 'react-native';
 import { getWeatherInfo } from '../utils/weatherUtils';
 
@@ -9,7 +8,6 @@ export default function HeaderWeather({ current, daily, theme, cityName }) {
 
   return (
     <View style={styles.container}>
-      {/* Aqui a cidade agora é dinâmica */}
       <Text style={[styles.city, { color: theme.text }]}>{cityName}</Text>
       <Text style={[styles.temp, { color: theme.text }]}>{Math.round(current.temperature_2m)}°</Text>
       <Text style={[styles.condition, { color: theme.text }]}>{desc}</Text>

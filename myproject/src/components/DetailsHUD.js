@@ -1,4 +1,3 @@
-// src/components/DetailsHUD.js
 import { Feather } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 

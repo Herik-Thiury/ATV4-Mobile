@@ -1,4 +1,3 @@
-// src/components/HourlyForecast.js
 import { Feather } from '@expo/vector-icons';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { getWeatherInfo } from '../utils/weatherUtils';
@@ -11,7 +10,7 @@ export default function HourlyForecast({ hourly, theme }) {
   const next24Hours = hourly.time.slice(startIndex, startIndex + 24).map((time, index) => {
     const hour = new Date(time).getHours();
     const actualIndex = startIndex + index;
-    // Consideramos "dia" entre as 6h e as 17h para o ícone
+    // Considerando "dia" entre as 6h e as 17h para o ícone
     const isDay = hour >= 6 && hour < 18 ? 1 : 0; 
     
     return {

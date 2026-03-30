@@ -1,4 +1,3 @@
-// src/utils/weatherUtils.js
 export const getWeatherInfo = (code, isDay = 1) => {
   if (code === 0) return { desc: 'Céu limpo', icon: isDay ? 'sun' : 'moon' };
   if (code === 1 || code === 2 || code === 3) return { desc: 'Parcialmente nublado', icon: 'cloud' };
